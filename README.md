@@ -1,0 +1,1 @@
+C3 bindings for the FTXUI C++ library, built on top of the existing `ftxui-c` bindings.
