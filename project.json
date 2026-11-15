@@ -7,6 +7,10 @@
   "build-dir": "build",
   "output": "build",
   "targets": {
+    "ftxui": {
+      "type": "source-lib",
+      "sources": ["src/**"]
+    },
     "generate-bindings": {
       "type": "executable",
       "sources": ["scripts/generate_bindings.c3"],
