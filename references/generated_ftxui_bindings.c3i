@@ -1,0 +1,2663 @@
+
+module ftxui::ffi;
+
+typedef AppHandle = void*;
+
+typedef ComponentHandle = void*;
+
+typedef ElementHandle = void*;
+
+typedef ColorHandle = void*;
+
+typedef CapturedMouseHandle = void*;
+
+typedef EventHandle = void*;
+
+typedef LoopHandle = void*;
+
+typedef LinearGradientHandle = void*;
+
+typedef CanvasHandle = void*;
+
+typedef TableHandle = void*;
+
+typedef TableSelectionHandle = void*;
+
+typedef StringHandle = void*;
+
+typedef BoxHandle = void*;
+
+alias RenderCallback = fn ElementHandle(
+  void* userdata);
+
+alias Callback = fn void(
+  void* userdata);
+
+alias PredicateCallback = fn bool(
+  void* userdata);
+
+alias Destructor = fn void(
+  void* userdata);
+
+alias EasingFunction = fn float(
+  float progress);
+
+constdef EasingFunctionType : CInt {
+  FTXUI_EASING_LINEAR = 0,
+  FTXUI_EASING_QUADRATIC_IN = 1,
+  FTXUI_EASING_QUADRATIC_OUT = 2,
+  FTXUI_EASING_QUADRATIC_IN_OUT = 3,
+  FTXUI_EASING_CUBIC_IN = 4,
+  FTXUI_EASING_CUBIC_OUT = 5,
+  FTXUI_EASING_CUBIC_IN_OUT = 6,
+  FTXUI_EASING_QUARTIC_IN = 7,
+  FTXUI_EASING_QUARTIC_OUT = 8,
+  FTXUI_EASING_QUARTIC_IN_OUT = 9,
+  FTXUI_EASING_QUINTIC_IN = 10,
+  FTXUI_EASING_QUINTIC_OUT = 11,
+  FTXUI_EASING_QUINTIC_IN_OUT = 12,
+  FTXUI_EASING_SINE_IN = 13,
+  FTXUI_EASING_SINE_OUT = 14,
+  FTXUI_EASING_SINE_IN_OUT = 15,
+  FTXUI_EASING_CIRCULAR_IN = 16,
+  FTXUI_EASING_CIRCULAR_OUT = 17,
+  FTXUI_EASING_CIRCULAR_IN_OUT = 18,
+  FTXUI_EASING_EXPONENTIAL_IN = 19,
+  FTXUI_EASING_EXPONENTIAL_OUT = 20,
+  FTXUI_EASING_EXPONENTIAL_IN_OUT = 21,
+  FTXUI_EASING_ELASTIC_IN = 22,
+  FTXUI_EASING_ELASTIC_OUT = 23,
+  FTXUI_EASING_ELASTIC_IN_OUT = 24,
+  FTXUI_EASING_BACK_IN = 25,
+  FTXUI_EASING_BACK_OUT = 26,
+  FTXUI_EASING_BACK_IN_OUT = 27,
+  FTXUI_EASING_BOUNCE_IN = 28,
+  FTXUI_EASING_BOUNCE_OUT = 29,
+  FTXUI_EASING_BOUNCE_IN_OUT = 30
+}
+
+constdef BorderStyle : CInt {
+  FTXUI_BORDER_STYLE_LIGHT = 0,
+  FTXUI_BORDER_STYLE_DASHED = 1,
+  FTXUI_BORDER_STYLE_HEAVY = 2,
+  FTXUI_BORDER_STYLE_DOUBLE = 3,
+  FTXUI_BORDER_STYLE_ROUNDED = 4,
+  FTXUI_BORDER_STYLE_EMPTY = 5
+}
+
+extern fn AppHandle app_create_fullscreen()
+@cname("ftxui_app_create_fullscreen");
+
+extern fn AppHandle app_create_fit_component()
+@cname("ftxui_app_create_fit_component");
+
+extern fn AppHandle app_create_terminal_output()
+@cname("ftxui_app_create_terminal_output");
+
+extern fn AppHandle app_create_fixed_size(
+  CInt w,
+  CInt h)
+@cname("ftxui_app_create_fixed_size");
+
+extern fn AppHandle app_create_fullscreen_primary_screen()
+@cname("ftxui_app_create_fullscreen_primary_screen");
+
+extern fn AppHandle app_create_fullscreen_alternate_screen()
+@cname("ftxui_app_create_fullscreen_alternate_screen");
+
+extern fn void app_loop(
+  AppHandle app,
+  ComponentHandle component)
+@cname("ftxui_app_loop");
+
+extern fn void app_exit(
+  AppHandle app)
+@cname("ftxui_app_exit");
+
+extern fn void app_destroy(
+  AppHandle app)
+@cname("ftxui_app_destroy");
+
+extern fn void app_track_mouse(
+  AppHandle app,
+  bool enable)
+@cname("ftxui_app_track_mouse");
+
+extern fn void app_handle_piped_input(
+  AppHandle app,
+  bool enable)
+@cname("ftxui_app_handle_piped_input");
+
+extern fn void app_force_handle_ctrl_c(
+  AppHandle app,
+  bool force)
+@cname("ftxui_app_force_handle_ctrl_c");
+
+extern fn void app_force_handle_ctrl_z(
+  AppHandle app,
+  bool force)
+@cname("ftxui_app_force_handle_ctrl_z");
+
+alias UnnamedPFN1 @private = fn void(
+  void*);
+
+extern fn void app_post(
+  AppHandle app,
+  UnnamedPFN1 callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_app_post");
+
+extern fn void app_post_event(
+  AppHandle app,
+  EventHandle event)
+@cname("ftxui_app_post_event");
+
+extern fn void app_with_restored_io(
+  AppHandle app,
+  UnnamedPFN1 callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_app_with_restored_io");
+
+extern fn AppHandle app_active()
+@cname("ftxui_app_active");
+
+extern fn void app_request_animation_frame(
+  AppHandle app)
+@cname("ftxui_app_request_animation_frame");
+
+extern fn CChar* app_terminal_name(
+  AppHandle app)
+@cname("ftxui_app_terminal_name");
+
+extern fn CInt app_terminal_version(
+  AppHandle app)
+@cname("ftxui_app_terminal_version");
+
+extern fn CChar* app_terminal_emulator_name(
+  AppHandle app)
+@cname("ftxui_app_terminal_emulator_name");
+
+extern fn CChar* app_terminal_emulator_version(
+  AppHandle app)
+@cname("ftxui_app_terminal_emulator_version");
+
+extern fn CInt* app_terminal_capabilities(
+  AppHandle app,
+  CInt* count)
+@cname("ftxui_app_terminal_capabilities");
+
+extern fn CapturedMouseHandle app_capture_mouse(
+  AppHandle app)
+@cname("ftxui_app_capture_mouse");
+
+extern fn void captured_mouse_destroy(
+  CapturedMouseHandle handle)
+@cname("ftxui_captured_mouse_destroy");
+
+extern fn void app_selection_change(
+  AppHandle app,
+  UnnamedPFN1 callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_app_selection_change");
+
+extern fn CChar* app_get_selection(
+  AppHandle app)
+@cname("ftxui_app_get_selection");
+
+constdef TerminalColor : CInt {
+  FTXUI_TERMINAL_COLOR_PALETTE1 = 0,
+  FTXUI_TERMINAL_COLOR_PALETTE16 = 1,
+  FTXUI_TERMINAL_COLOR_PALETTE256 = 2,
+  FTXUI_TERMINAL_COLOR_TRUE_COLOR = 3
+}
+
+
+struct Quirks {
+  bool block_characters;
+  bool cursor_hiding;
+  bool component_ascii;
+  TerminalColor color_support;
+}
+
+extern fn CInt terminal_width()
+@cname("ftxui_terminal_width");
+
+extern fn CInt terminal_height()
+@cname("ftxui_terminal_height");
+
+extern fn void terminal_set_fallback_size(
+  CInt w,
+  CInt h)
+@cname("ftxui_terminal_set_fallback_size");
+
+extern fn TerminalColor terminal_color_support()
+@cname("ftxui_terminal_color_support");
+
+extern fn void terminal_set_color_support(
+  TerminalColor color)
+@cname("ftxui_terminal_set_color_support");
+
+extern fn Quirks terminal_get_quirks()
+@cname("ftxui_terminal_get_quirks");
+
+extern fn void terminal_set_quirks(
+  Quirks quirks)
+@cname("ftxui_terminal_set_quirks");
+
+extern fn LoopHandle loop_create(
+  AppHandle app,
+  ComponentHandle component)
+@cname("ftxui_loop_create");
+
+extern fn bool loop_has_quitted(
+  LoopHandle loop)
+@cname("ftxui_loop_has_quitted");
+
+extern fn void loop_run_once(
+  LoopHandle loop)
+@cname("ftxui_loop_run_once");
+
+extern fn void loop_run_once_blocking(
+  LoopHandle loop)
+@cname("ftxui_loop_run_once_blocking");
+
+extern fn void loop_destroy(
+  LoopHandle loop)
+@cname("ftxui_loop_destroy");
+
+constdef Palette1 : CInt {
+  FTXUI_PALETTE1_DEFAULT = 0
+}
+
+constdef Palette16 : CInt {
+  FTXUI_PALETTE16_BLACK = 0,
+  FTXUI_PALETTE16_RED = 1,
+  FTXUI_PALETTE16_GREEN = 2,
+  FTXUI_PALETTE16_YELLOW = 3,
+  FTXUI_PALETTE16_BLUE = 4,
+  FTXUI_PALETTE16_MAGENTA = 5,
+  FTXUI_PALETTE16_CYAN = 6,
+  FTXUI_PALETTE16_GRAY_LIGHT = 7,
+  FTXUI_PALETTE16_GRAY_DARK = 8,
+  FTXUI_PALETTE16_RED_LIGHT = 9,
+  FTXUI_PALETTE16_GREEN_LIGHT = 10,
+  FTXUI_PALETTE16_YELLOW_LIGHT = 11,
+  FTXUI_PALETTE16_BLUE_LIGHT = 12,
+  FTXUI_PALETTE16_MAGENTA_LIGHT = 13,
+  FTXUI_PALETTE16_CYAN_LIGHT = 14,
+  FTXUI_PALETTE16_WHITE = 15
+}
+
+constdef Palette256 : CInt {
+  FTXUI_PALETTE256_AQUAMARINE1 = 122,
+  FTXUI_PALETTE256_AQUAMARINE1BIS = 86,
+  FTXUI_PALETTE256_AQUAMARINE3 = 79,
+  FTXUI_PALETTE256_BLUE1 = 21,
+  FTXUI_PALETTE256_BLUE3 = 19,
+  FTXUI_PALETTE256_BLUE3BIS = 20,
+  FTXUI_PALETTE256_BLUEVIOLET = 57,
+  FTXUI_PALETTE256_CADETBLUE = 72,
+  FTXUI_PALETTE256_CADETBLUEBIS = 73,
+  FTXUI_PALETTE256_CHARTREUSE1 = 118,
+  FTXUI_PALETTE256_CHARTREUSE2 = 112,
+  FTXUI_PALETTE256_CHARTREUSE2BIS = 82,
+  FTXUI_PALETTE256_CHARTREUSE3 = 70,
+  FTXUI_PALETTE256_CHARTREUSE3BIS = 76,
+  FTXUI_PALETTE256_CHARTREUSE4 = 64,
+  FTXUI_PALETTE256_CORNFLOWERBLUE = 69,
+  FTXUI_PALETTE256_CORNSILK1 = 230,
+  FTXUI_PALETTE256_CYAN1 = 51,
+  FTXUI_PALETTE256_CYAN2 = 50,
+  FTXUI_PALETTE256_CYAN3 = 43,
+  FTXUI_PALETTE256_DARKBLUE = 18,
+  FTXUI_PALETTE256_DARKCYAN = 36,
+  FTXUI_PALETTE256_DARKGOLDENROD = 136,
+  FTXUI_PALETTE256_DARKGREEN = 22,
+  FTXUI_PALETTE256_DARKKHAKI = 143,
+  FTXUI_PALETTE256_DARKMAGENTA = 90,
+  FTXUI_PALETTE256_DARKMAGENTABIS = 91,
+  FTXUI_PALETTE256_DARKOLIVEGREEN1 = 191,
+  FTXUI_PALETTE256_DARKOLIVEGREEN1BIS = 192,
+  FTXUI_PALETTE256_DARKOLIVEGREEN2 = 155,
+  FTXUI_PALETTE256_DARKOLIVEGREEN3 = 107,
+  FTXUI_PALETTE256_DARKOLIVEGREEN3BIS = 113,
+  FTXUI_PALETTE256_DARKOLIVEGREEN3TER = 149,
+  FTXUI_PALETTE256_DARKORANGE = 208,
+  FTXUI_PALETTE256_DARKORANGE3 = 130,
+  FTXUI_PALETTE256_DARKORANGE3BIS = 166,
+  FTXUI_PALETTE256_DARKRED = 52,
+  FTXUI_PALETTE256_DARKREDBIS = 88,
+  FTXUI_PALETTE256_DARKSEAGREEN = 108,
+  FTXUI_PALETTE256_DARKSEAGREEN1 = 158,
+  FTXUI_PALETTE256_DARKSEAGREEN1BIS = 193,
+  FTXUI_PALETTE256_DARKSEAGREEN2 = 151,
+  FTXUI_PALETTE256_DARKSEAGREEN2BIS = 157,
+  FTXUI_PALETTE256_DARKSEAGREEN3 = 115,
+  FTXUI_PALETTE256_DARKSEAGREEN3BIS = 150,
+  FTXUI_PALETTE256_DARKSEAGREEN4 = 65,
+  FTXUI_PALETTE256_DARKSEAGREEN4BIS = 71,
+  FTXUI_PALETTE256_DARKSLATEGRAY1 = 123,
+  FTXUI_PALETTE256_DARKSLATEGRAY2 = 87,
+  FTXUI_PALETTE256_DARKSLATEGRAY3 = 116,
+  FTXUI_PALETTE256_DARKTURQUOISE = 44,
+  FTXUI_PALETTE256_DARKVIOLET = 128,
+  FTXUI_PALETTE256_DARKVIOLETBIS = 92,
+  FTXUI_PALETTE256_DEEPPINK1 = 198,
+  FTXUI_PALETTE256_DEEPPINK1BIS = 199,
+  FTXUI_PALETTE256_DEEPPINK2 = 197,
+  FTXUI_PALETTE256_DEEPPINK3 = 161,
+  FTXUI_PALETTE256_DEEPPINK3BIS = 162,
+  FTXUI_PALETTE256_DEEPPINK4 = 125,
+  FTXUI_PALETTE256_DEEPPINK4BIS = 89,
+  FTXUI_PALETTE256_DEEPPINK4TER = 53,
+  FTXUI_PALETTE256_DEEPSKYBLUE1 = 39,
+  FTXUI_PALETTE256_DEEPSKYBLUE2 = 38,
+  FTXUI_PALETTE256_DEEPSKYBLUE3 = 31,
+  FTXUI_PALETTE256_DEEPSKYBLUE3BIS = 32,
+  FTXUI_PALETTE256_DEEPSKYBLUE4 = 23,
+  FTXUI_PALETTE256_DEEPSKYBLUE4BIS = 24,
+  FTXUI_PALETTE256_DEEPSKYBLUE4TER = 25,
+  FTXUI_PALETTE256_DODGERBLUE1 = 33,
+  FTXUI_PALETTE256_DODGERBLUE2 = 27,
+  FTXUI_PALETTE256_DODGERBLUE3 = 26,
+  FTXUI_PALETTE256_GOLD1 = 220,
+  FTXUI_PALETTE256_GOLD3 = 142,
+  FTXUI_PALETTE256_GOLD3BIS = 178,
+  FTXUI_PALETTE256_GREEN1 = 46,
+  FTXUI_PALETTE256_GREEN3 = 34,
+  FTXUI_PALETTE256_GREEN3BIS = 40,
+  FTXUI_PALETTE256_GREEN4 = 28,
+  FTXUI_PALETTE256_GREENYELLOW = 154,
+  FTXUI_PALETTE256_GREY0 = 16,
+  FTXUI_PALETTE256_GREY100 = 231,
+  FTXUI_PALETTE256_GREY11 = 234,
+  FTXUI_PALETTE256_GREY15 = 235,
+  FTXUI_PALETTE256_GREY19 = 236,
+  FTXUI_PALETTE256_GREY23 = 237,
+  FTXUI_PALETTE256_GREY27 = 238,
+  FTXUI_PALETTE256_GREY3 = 232,
+  FTXUI_PALETTE256_GREY30 = 239,
+  FTXUI_PALETTE256_GREY35 = 240,
+  FTXUI_PALETTE256_GREY37 = 59,
+  FTXUI_PALETTE256_GREY39 = 241,
+  FTXUI_PALETTE256_GREY42 = 242,
+  FTXUI_PALETTE256_GREY46 = 243,
+  FTXUI_PALETTE256_GREY50 = 244,
+  FTXUI_PALETTE256_GREY53 = 102,
+  FTXUI_PALETTE256_GREY54 = 245,
+  FTXUI_PALETTE256_GREY58 = 246,
+  FTXUI_PALETTE256_GREY62 = 247,
+  FTXUI_PALETTE256_GREY63 = 139,
+  FTXUI_PALETTE256_GREY66 = 248,
+  FTXUI_PALETTE256_GREY69 = 145,
+  FTXUI_PALETTE256_GREY7 = 233,
+  FTXUI_PALETTE256_GREY70 = 249,
+  FTXUI_PALETTE256_GREY74 = 250,
+  FTXUI_PALETTE256_GREY78 = 251,
+  FTXUI_PALETTE256_GREY82 = 252,
+  FTXUI_PALETTE256_GREY84 = 188,
+  FTXUI_PALETTE256_GREY85 = 253,
+  FTXUI_PALETTE256_GREY89 = 254,
+  FTXUI_PALETTE256_GREY93 = 255,
+  FTXUI_PALETTE256_HONEYDEW2 = 194,
+  FTXUI_PALETTE256_HOTPINK = 205,
+  FTXUI_PALETTE256_HOTPINK2 = 169,
+  FTXUI_PALETTE256_HOTPINK3 = 132,
+  FTXUI_PALETTE256_HOTPINK3BIS = 168,
+  FTXUI_PALETTE256_HOTPINKBIS = 206,
+  FTXUI_PALETTE256_INDIANRED = 131,
+  FTXUI_PALETTE256_INDIANRED1 = 203,
+  FTXUI_PALETTE256_INDIANRED1BIS = 204,
+  FTXUI_PALETTE256_INDIANREDBIS = 167,
+  FTXUI_PALETTE256_KHAKI1 = 228,
+  FTXUI_PALETTE256_KHAKI3 = 185,
+  FTXUI_PALETTE256_LIGHTCORAL = 210,
+  FTXUI_PALETTE256_LIGHTCYAN1BIS = 195,
+  FTXUI_PALETTE256_LIGHTCYAN3 = 152,
+  FTXUI_PALETTE256_LIGHTGOLDENROD1 = 227,
+  FTXUI_PALETTE256_LIGHTGOLDENROD2 = 186,
+  FTXUI_PALETTE256_LIGHTGOLDENROD2BIS = 221,
+  FTXUI_PALETTE256_LIGHTGOLDENROD2TER = 222,
+  FTXUI_PALETTE256_LIGHTGOLDENROD3 = 179,
+  FTXUI_PALETTE256_LIGHTGREEN = 119,
+  FTXUI_PALETTE256_LIGHTGREENBIS = 120,
+  FTXUI_PALETTE256_LIGHTPINK1 = 217,
+  FTXUI_PALETTE256_LIGHTPINK3 = 174,
+  FTXUI_PALETTE256_LIGHTPINK4 = 95,
+  FTXUI_PALETTE256_LIGHTSALMON1 = 216,
+  FTXUI_PALETTE256_LIGHTSALMON3 = 137,
+  FTXUI_PALETTE256_LIGHTSALMON3BIS = 173,
+  FTXUI_PALETTE256_LIGHTSEAGREEN = 37,
+  FTXUI_PALETTE256_LIGHTSKYBLUE1 = 153,
+  FTXUI_PALETTE256_LIGHTSKYBLUE3 = 109,
+  FTXUI_PALETTE256_LIGHTSKYBLUE3BIS = 110,
+  FTXUI_PALETTE256_LIGHTSLATEBLUE = 105,
+  FTXUI_PALETTE256_LIGHTSLATEGREY = 103,
+  FTXUI_PALETTE256_LIGHTSTEELBLUE = 147,
+  FTXUI_PALETTE256_LIGHTSTEELBLUE1 = 189,
+  FTXUI_PALETTE256_LIGHTSTEELBLUE3 = 146,
+  FTXUI_PALETTE256_LIGHTYELLOW3 = 187,
+  FTXUI_PALETTE256_MAGENTA1 = 201,
+  FTXUI_PALETTE256_MAGENTA2 = 165,
+  FTXUI_PALETTE256_MAGENTA2BIS = 200,
+  FTXUI_PALETTE256_MAGENTA3 = 127,
+  FTXUI_PALETTE256_MAGENTA3BIS = 163,
+  FTXUI_PALETTE256_MAGENTA3TER = 164,
+  FTXUI_PALETTE256_MEDIUMORCHID = 134,
+  FTXUI_PALETTE256_MEDIUMORCHID1 = 171,
+  FTXUI_PALETTE256_MEDIUMORCHID1BIS = 207,
+  FTXUI_PALETTE256_MEDIUMORCHID3 = 133,
+  FTXUI_PALETTE256_MEDIUMPURPLE = 104,
+  FTXUI_PALETTE256_MEDIUMPURPLE1 = 141,
+  FTXUI_PALETTE256_MEDIUMPURPLE2 = 135,
+  FTXUI_PALETTE256_MEDIUMPURPLE2BIS = 140,
+  FTXUI_PALETTE256_MEDIUMPURPLE3 = 97,
+  FTXUI_PALETTE256_MEDIUMPURPLE3BIS = 98,
+  FTXUI_PALETTE256_MEDIUMPURPLE4 = 60,
+  FTXUI_PALETTE256_MEDIUMSPRINGGREEN = 49,
+  FTXUI_PALETTE256_MEDIUMTURQUOISE = 80,
+  FTXUI_PALETTE256_MEDIUMVIOLETRED = 126,
+  FTXUI_PALETTE256_MISTYROSE1 = 224,
+  FTXUI_PALETTE256_MISTYROSE3 = 181,
+  FTXUI_PALETTE256_NAVAJOWHITE1 = 223,
+  FTXUI_PALETTE256_NAVAJOWHITE3 = 144,
+  FTXUI_PALETTE256_NAVYBLUE = 17,
+  FTXUI_PALETTE256_ORANGE1 = 214,
+  FTXUI_PALETTE256_ORANGE3 = 172,
+  FTXUI_PALETTE256_ORANGE4 = 58,
+  FTXUI_PALETTE256_ORANGE4BIS = 94,
+  FTXUI_PALETTE256_ORANGERED1 = 202,
+  FTXUI_PALETTE256_ORCHID = 170,
+  FTXUI_PALETTE256_ORCHID1 = 213,
+  FTXUI_PALETTE256_ORCHID2 = 212,
+  FTXUI_PALETTE256_PALEGREEN1 = 121,
+  FTXUI_PALETTE256_PALEGREEN1BIS = 156,
+  FTXUI_PALETTE256_PALEGREEN3 = 114,
+  FTXUI_PALETTE256_PALEGREEN3BIS = 77,
+  FTXUI_PALETTE256_PALETURQUOISE1 = 159,
+  FTXUI_PALETTE256_PALETURQUOISE4 = 66,
+  FTXUI_PALETTE256_PALEVIOLETRED1 = 211,
+  FTXUI_PALETTE256_PINK1 = 218,
+  FTXUI_PALETTE256_PINK3 = 175,
+  FTXUI_PALETTE256_PLUM1 = 219,
+  FTXUI_PALETTE256_PLUM2 = 183,
+  FTXUI_PALETTE256_PLUM3 = 176,
+  FTXUI_PALETTE256_PLUM4 = 96,
+  FTXUI_PALETTE256_PURPLE = 129,
+  FTXUI_PALETTE256_PURPLE3 = 56,
+  FTXUI_PALETTE256_PURPLE4 = 54,
+  FTXUI_PALETTE256_PURPLE4BIS = 55,
+  FTXUI_PALETTE256_PURPLEBIS = 93,
+  FTXUI_PALETTE256_RED1 = 196,
+  FTXUI_PALETTE256_RED3 = 124,
+  FTXUI_PALETTE256_RED3BIS = 160,
+  FTXUI_PALETTE256_ROSYBROWN = 138,
+  FTXUI_PALETTE256_ROYALBLUE1 = 63,
+  FTXUI_PALETTE256_SALMON1 = 209,
+  FTXUI_PALETTE256_SANDYBROWN = 215,
+  FTXUI_PALETTE256_SEAGREEN1 = 84,
+  FTXUI_PALETTE256_SEAGREEN1BIS = 85,
+  FTXUI_PALETTE256_SEAGREEN2 = 83,
+  FTXUI_PALETTE256_SEAGREEN3 = 78,
+  FTXUI_PALETTE256_SKYBLUE1 = 117,
+  FTXUI_PALETTE256_SKYBLUE2 = 111,
+  FTXUI_PALETTE256_SKYBLUE3 = 74,
+  FTXUI_PALETTE256_SLATEBLUE1 = 99,
+  FTXUI_PALETTE256_SLATEBLUE3 = 61,
+  FTXUI_PALETTE256_SLATEBLUE3BIS = 62,
+  FTXUI_PALETTE256_SPRINGGREEN1 = 48,
+  FTXUI_PALETTE256_SPRINGGREEN2 = 42,
+  FTXUI_PALETTE256_SPRINGGREEN2BIS = 47,
+  FTXUI_PALETTE256_SPRINGGREEN3 = 35,
+  FTXUI_PALETTE256_SPRINGGREEN3BIS = 41,
+  FTXUI_PALETTE256_SPRINGGREEN4 = 29,
+  FTXUI_PALETTE256_STEELBLUE = 67,
+  FTXUI_PALETTE256_STEELBLUE1 = 75,
+  FTXUI_PALETTE256_STEELBLUE1BIS = 81,
+  FTXUI_PALETTE256_STEELBLUE3 = 68,
+  FTXUI_PALETTE256_TAN = 180,
+  FTXUI_PALETTE256_THISTLE1 = 225,
+  FTXUI_PALETTE256_THISTLE3 = 182,
+  FTXUI_PALETTE256_TURQUOISE2 = 45,
+  FTXUI_PALETTE256_TURQUOISE4 = 30,
+  FTXUI_PALETTE256_VIOLET = 177,
+  FTXUI_PALETTE256_WHEAT1 = 229,
+  FTXUI_PALETTE256_WHEAT4 = 101,
+  FTXUI_PALETTE256_YELLOW1 = 226,
+  FTXUI_PALETTE256_YELLOW2 = 190,
+  FTXUI_PALETTE256_YELLOW3 = 148,
+  FTXUI_PALETTE256_YELLOW3BIS = 184,
+  FTXUI_PALETTE256_YELLOW4 = 100,
+  FTXUI_PALETTE256_YELLOW4BIS = 106
+}
+
+extern fn ColorHandle color_default()
+@cname("ftxui_color_default");
+
+extern fn ColorHandle color_rgb(
+  char r,
+  char g,
+  char b)
+@cname("ftxui_color_rgb");
+
+extern fn ColorHandle color_rgba(
+  char r,
+  char g,
+  char b,
+  char a)
+@cname("ftxui_color_rgba");
+
+extern fn ColorHandle color_hsv(
+  char h,
+  char s,
+  char v)
+@cname("ftxui_color_hsv");
+
+extern fn ColorHandle color_hsva(
+  char h,
+  char s,
+  char v,
+  char a)
+@cname("ftxui_color_hsva");
+
+extern fn ColorHandle color_palette1(
+  Palette1 index)
+@cname("ftxui_color_palette1");
+
+extern fn ColorHandle color_palette16(
+  Palette16 index)
+@cname("ftxui_color_palette16");
+
+extern fn ColorHandle color_palette256(
+  Palette256 index)
+@cname("ftxui_color_palette256");
+
+extern fn ColorHandle color_palette256_raw(
+  CInt index)
+@cname("ftxui_color_palette256_raw");
+
+extern fn ColorHandle color_interpolate(
+  float t,
+  ColorHandle a,
+  ColorHandle b)
+@cname("ftxui_color_interpolate");
+
+extern fn ColorHandle color_blend(
+  ColorHandle lhs,
+  ColorHandle rhs)
+@cname("ftxui_color_blend");
+
+extern fn bool color_is_opaque(
+  ColorHandle color)
+@cname("ftxui_color_is_opaque");
+
+extern fn bool color_equals(
+  ColorHandle lhs,
+  ColorHandle rhs)
+@cname("ftxui_color_equals");
+
+extern fn bool color_not_equals(
+  ColorHandle lhs,
+  ColorHandle rhs)
+@cname("ftxui_color_not_equals");
+
+extern fn CChar* color_print(
+  ColorHandle color,
+  bool is_background_color)
+@cname("ftxui_color_print");
+
+extern fn void color_destroy(
+  ColorHandle color)
+@cname("ftxui_color_destroy");
+
+
+struct ColorInfo {
+  CInt index_256;
+  char index_16;
+  CChar* name;
+  char red;
+  char green;
+  char blue;
+  char hue;
+  char saturation;
+  char value;
+}
+
+extern fn ColorInfo* color_info_sorted_2d(
+  CInt* num_rows,
+  CInt* max_cols)
+@cname("ftxui_color_info_sorted_2d");
+
+extern fn void color_info_free(
+  ColorInfo* data)
+@cname("ftxui_color_info_free");
+
+extern fn ColorInfo color_info_get_256(
+  Palette256 index)
+@cname("ftxui_color_info_get_256");
+
+extern fn ColorInfo color_info_get_16(
+  Palette16 index)
+@cname("ftxui_color_info_get_16");
+
+extern fn LinearGradientHandle linear_gradient_create()
+@cname("ftxui_linear_gradient_create");
+
+extern fn void linear_gradient_destroy(
+  LinearGradientHandle gradient)
+@cname("ftxui_linear_gradient_destroy");
+
+extern fn void linear_gradient_angle(
+  LinearGradientHandle gradient,
+  float angle)
+@cname("ftxui_linear_gradient_angle");
+
+extern fn void linear_gradient_stop(
+  LinearGradientHandle gradient,
+  ColorHandle color)
+@cname("ftxui_linear_gradient_stop");
+
+extern fn void linear_gradient_stop_at(
+  LinearGradientHandle gradient,
+  ColorHandle color,
+  float position)
+@cname("ftxui_linear_gradient_stop_at");
+
+extern fn ElementHandle element_color_linear_gradient(
+  ElementHandle element,
+  LinearGradientHandle gradient)
+@cname("ftxui_element_color_linear_gradient");
+
+extern fn ElementHandle element_bgcolor_linear_gradient(
+  ElementHandle element,
+  LinearGradientHandle gradient)
+@cname("ftxui_element_bgcolor_linear_gradient");
+
+extern fn ElementHandle element_text(
+  CChar* text)
+@cname("ftxui_element_text");
+
+extern fn ElementHandle element_vtext(
+  CChar* text)
+@cname("ftxui_element_vtext");
+
+extern fn ElementHandle element_paragraph(
+  CChar* text)
+@cname("ftxui_element_paragraph");
+
+extern fn ElementHandle element_paragraph_align_left(
+  CChar* text)
+@cname("ftxui_element_paragraph_align_left");
+
+extern fn ElementHandle element_paragraph_align_right(
+  CChar* text)
+@cname("ftxui_element_paragraph_align_right");
+
+extern fn ElementHandle element_paragraph_align_center(
+  CChar* text)
+@cname("ftxui_element_paragraph_align_center");
+
+extern fn ElementHandle element_paragraph_align_justify(
+  CChar* text)
+@cname("ftxui_element_paragraph_align_justify");
+
+extern fn ElementHandle element_empty()
+@cname("ftxui_element_empty");
+
+extern fn ElementHandle element_filler()
+@cname("ftxui_element_filler");
+
+extern fn ElementHandle element_gauge(
+  double value)
+@cname("ftxui_element_gauge");
+
+extern fn ElementHandle element_gauge_left(
+  double value)
+@cname("ftxui_element_gauge_left");
+
+extern fn ElementHandle element_gauge_right(
+  double value)
+@cname("ftxui_element_gauge_right");
+
+extern fn ElementHandle element_gauge_up(
+  double value)
+@cname("ftxui_element_gauge_up");
+
+extern fn ElementHandle element_gauge_down(
+  double value)
+@cname("ftxui_element_gauge_down");
+
+constdef Direction : CInt {
+  FTXUI_DIRECTION_UP = 0,
+  FTXUI_DIRECTION_DOWN = 1,
+  FTXUI_DIRECTION_LEFT = 2,
+  FTXUI_DIRECTION_RIGHT = 3
+}
+
+extern fn ElementHandle element_gauge_direction(
+  double value,
+  Direction direction)
+@cname("ftxui_element_gauge_direction");
+
+extern fn ElementHandle element_spinner(
+  CInt charset_index,
+  CInt image_index)
+@cname("ftxui_element_spinner");
+
+alias GraphCallback = fn void(
+  CInt width,
+  CInt height,
+  CInt* output,
+  void* userdata);
+
+extern fn ElementHandle element_graph(
+  GraphCallback callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_element_graph");
+
+extern fn ElementHandle element_window(
+  ElementHandle title,
+  ElementHandle element)
+@cname("ftxui_element_window");
+
+extern fn void element_destroy(
+  ElementHandle element)
+@cname("ftxui_element_destroy");
+
+extern fn ElementHandle element_separator()
+@cname("ftxui_element_separator");
+
+extern fn ElementHandle element_separator_light()
+@cname("ftxui_element_separator_light");
+
+extern fn ElementHandle element_separator_dashed()
+@cname("ftxui_element_separator_dashed");
+
+extern fn ElementHandle element_separator_heavy()
+@cname("ftxui_element_separator_heavy");
+
+extern fn ElementHandle element_separator_double()
+@cname("ftxui_element_separator_double");
+
+extern fn ElementHandle element_separator_empty()
+@cname("ftxui_element_separator_empty");
+
+extern fn ElementHandle element_separator_styled(
+  BorderStyle style)
+@cname("ftxui_element_separator_styled");
+
+extern fn ElementHandle element_separator_character(
+  CChar* character)
+@cname("ftxui_element_separator_character");
+
+extern fn ElementHandle element_separator_hselector(
+  float left,
+  float right,
+  ColorHandle unselected_color,
+  ColorHandle selected_color)
+@cname("ftxui_element_separator_hselector");
+
+extern fn ElementHandle element_separator_vselector(
+  float up,
+  float down,
+  ColorHandle unselected_color,
+  ColorHandle selected_color)
+@cname("ftxui_element_separator_vselector");
+
+extern fn ElementHandle element_hbox(
+  ElementHandle* elements,
+  CInt count)
+@cname("ftxui_element_hbox");
+
+extern fn ElementHandle element_vbox(
+  ElementHandle* elements,
+  CInt count)
+@cname("ftxui_element_vbox");
+
+extern fn ElementHandle element_dbox(
+  ElementHandle* elements,
+  CInt count)
+@cname("ftxui_element_dbox");
+
+extern fn ElementHandle element_hflow(
+  ElementHandle* elements,
+  CInt count)
+@cname("ftxui_element_hflow");
+
+extern fn ElementHandle element_vflow(
+  ElementHandle* elements,
+  CInt count)
+@cname("ftxui_element_vflow");
+
+extern fn ElementHandle element_gridbox(
+  ElementHandle* cells,
+  CInt total_cells,
+  CInt* row_lengths,
+  CInt row_count)
+@cname("ftxui_element_gridbox");
+
+constdef FlexboxDirection : CInt {
+  FTXUI_FLEXBOX_DIRECTION_ROW = 0,
+  FTXUI_FLEXBOX_DIRECTION_ROW_INVERSED = 1,
+  FTXUI_FLEXBOX_DIRECTION_COLUMN = 2,
+  FTXUI_FLEXBOX_DIRECTION_COLUMN_INVERSED = 3
+}
+
+constdef FlexboxWrap : CInt {
+  FTXUI_FLEXBOX_WRAP_NO_WRAP = 0,
+  FTXUI_FLEXBOX_WRAP_WRAP = 1,
+  FTXUI_FLEXBOX_WRAP_WRAP_INVERSED = 2
+}
+
+constdef FlexboxJustify : CInt {
+  FTXUI_FLEXBOX_JUSTIFY_FLEX_START = 0,
+  FTXUI_FLEXBOX_JUSTIFY_FLEX_END = 1,
+  FTXUI_FLEXBOX_JUSTIFY_CENTER = 2,
+  FTXUI_FLEXBOX_JUSTIFY_STRETCH = 3,
+  FTXUI_FLEXBOX_JUSTIFY_SPACE_BETWEEN = 4,
+  FTXUI_FLEXBOX_JUSTIFY_SPACE_AROUND = 5,
+  FTXUI_FLEXBOX_JUSTIFY_SPACE_EVENLY = 6
+}
+
+constdef FlexboxAlignItems : CInt {
+  FTXUI_FLEXBOX_ALIGN_ITEMS_FLEX_START = 0,
+  FTXUI_FLEXBOX_ALIGN_ITEMS_FLEX_END = 1,
+  FTXUI_FLEXBOX_ALIGN_ITEMS_CENTER = 2,
+  FTXUI_FLEXBOX_ALIGN_ITEMS_STRETCH = 3
+}
+
+constdef FlexboxAlignContent : CInt {
+  FTXUI_FLEXBOX_ALIGN_CONTENT_FLEX_START = 0,
+  FTXUI_FLEXBOX_ALIGN_CONTENT_FLEX_END = 1,
+  FTXUI_FLEXBOX_ALIGN_CONTENT_CENTER = 2,
+  FTXUI_FLEXBOX_ALIGN_CONTENT_STRETCH = 3,
+  FTXUI_FLEXBOX_ALIGN_CONTENT_SPACE_BETWEEN = 4,
+  FTXUI_FLEXBOX_ALIGN_CONTENT_SPACE_AROUND = 5,
+  FTXUI_FLEXBOX_ALIGN_CONTENT_SPACE_EVENLY = 6
+}
+
+
+struct FlexboxConfig {
+  FlexboxDirection direction;
+  FlexboxWrap wrap;
+  FlexboxJustify justify_content;
+  FlexboxAlignItems align_items;
+  FlexboxAlignContent align_content;
+  CInt gap_x;
+  CInt gap_y;
+}
+
+extern fn ElementHandle element_flexbox(
+  ElementHandle* elements,
+  CInt count,
+  FlexboxConfig config)
+@cname("ftxui_element_flexbox");
+
+extern fn ElementHandle element_border(
+  ElementHandle element)
+@cname("ftxui_element_border");
+
+extern fn ElementHandle element_border_light(
+  ElementHandle element)
+@cname("ftxui_element_border_light");
+
+extern fn ElementHandle element_border_dashed(
+  ElementHandle element)
+@cname("ftxui_element_border_dashed");
+
+extern fn ElementHandle element_border_heavy(
+  ElementHandle element)
+@cname("ftxui_element_border_heavy");
+
+extern fn ElementHandle element_border_double(
+  ElementHandle element)
+@cname("ftxui_element_border_double");
+
+extern fn ElementHandle element_border_rounded(
+  ElementHandle element)
+@cname("ftxui_element_border_rounded");
+
+extern fn ElementHandle element_border_empty(
+  ElementHandle element)
+@cname("ftxui_element_border_empty");
+
+extern fn ElementHandle element_border_styled(
+  ElementHandle element,
+  BorderStyle style)
+@cname("ftxui_element_border_styled");
+
+extern fn ElementHandle element_border_styled_color(
+  ElementHandle element,
+  BorderStyle style,
+  ColorHandle color)
+@cname("ftxui_element_border_styled_color");
+
+extern fn ElementHandle element_border_colored(
+  ElementHandle element,
+  ColorHandle color)
+@cname("ftxui_element_border_colored");
+
+extern fn ElementHandle element_bold(
+  ElementHandle element)
+@cname("ftxui_element_bold");
+
+extern fn ElementHandle element_dim(
+  ElementHandle element)
+@cname("ftxui_element_dim");
+
+extern fn ElementHandle element_italic(
+  ElementHandle element)
+@cname("ftxui_element_italic");
+
+extern fn ElementHandle element_inverted(
+  ElementHandle element)
+@cname("ftxui_element_inverted");
+
+extern fn ElementHandle element_underlined(
+  ElementHandle element)
+@cname("ftxui_element_underlined");
+
+extern fn ElementHandle element_underlined_double(
+  ElementHandle element)
+@cname("ftxui_element_underlined_double");
+
+extern fn ElementHandle element_blink(
+  ElementHandle element)
+@cname("ftxui_element_blink");
+
+extern fn ElementHandle element_strikethrough(
+  ElementHandle element)
+@cname("ftxui_element_strikethrough");
+
+extern fn ElementHandle element_color(
+  ElementHandle element,
+  ColorHandle color)
+@cname("ftxui_element_color");
+
+extern fn ElementHandle element_bgcolor(
+  ElementHandle element,
+  ColorHandle color)
+@cname("ftxui_element_bgcolor");
+
+extern fn ElementHandle element_automerge(
+  ElementHandle element)
+@cname("ftxui_element_automerge");
+
+extern fn ElementHandle element_hyperlink(
+  CChar* link,
+  ElementHandle element)
+@cname("ftxui_element_hyperlink");
+
+extern fn ElementHandle element_clear_under(
+  ElementHandle element)
+@cname("ftxui_element_clear_under");
+
+extern fn ElementHandle element_nothing(
+  ElementHandle element)
+@cname("ftxui_element_nothing");
+
+
+struct Cell {
+  bool blink;
+  bool bold;
+  bool dim;
+  bool italic;
+  bool inverted;
+  bool underlined;
+  bool underlined_double;
+  bool strikethrough;
+  bool automerge;
+  ColorHandle foreground_color;
+  ColorHandle background_color;
+}
+
+alias CellStyleCallback = fn void(
+  Cell* cell,
+  void* userdata);
+
+extern fn ElementHandle element_selection_style_reset(
+  ElementHandle element)
+@cname("ftxui_element_selection_style_reset");
+
+extern fn ElementHandle element_selection_color(
+  ElementHandle element,
+  ColorHandle color)
+@cname("ftxui_element_selection_color");
+
+extern fn ElementHandle element_selection_background_color(
+  ElementHandle element,
+  ColorHandle color)
+@cname("ftxui_element_selection_background_color");
+
+extern fn ElementHandle element_selection_foreground_color(
+  ElementHandle element,
+  ColorHandle color)
+@cname("ftxui_element_selection_foreground_color");
+
+extern fn ElementHandle element_selection_style(
+  ElementHandle element,
+  CellStyleCallback callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_element_selection_style");
+
+constdef WidthOrHeight : CInt {
+  FTXUI_WIDTH_OR_HEIGHT_WIDTH = 0,
+  FTXUI_WIDTH_OR_HEIGHT_HEIGHT = 1
+}
+
+constdef Constraint : CInt {
+  FTXUI_CONSTRAINT_LESS_THAN = 0,
+  FTXUI_CONSTRAINT_GREATER_THAN = 1,
+  FTXUI_CONSTRAINT_EQUAL = 2
+}
+
+extern fn ElementHandle element_flex(
+  ElementHandle element)
+@cname("ftxui_element_flex");
+
+extern fn ElementHandle element_flex_grow(
+  ElementHandle element)
+@cname("ftxui_element_flex_grow");
+
+extern fn ElementHandle element_flex_shrink(
+  ElementHandle element)
+@cname("ftxui_element_flex_shrink");
+
+extern fn ElementHandle element_xflex(
+  ElementHandle element)
+@cname("ftxui_element_xflex");
+
+extern fn ElementHandle element_xflex_grow(
+  ElementHandle element)
+@cname("ftxui_element_xflex_grow");
+
+extern fn ElementHandle element_xflex_shrink(
+  ElementHandle element)
+@cname("ftxui_element_xflex_shrink");
+
+extern fn ElementHandle element_yflex(
+  ElementHandle element)
+@cname("ftxui_element_yflex");
+
+extern fn ElementHandle element_yflex_grow(
+  ElementHandle element)
+@cname("ftxui_element_yflex_grow");
+
+extern fn ElementHandle element_yflex_shrink(
+  ElementHandle element)
+@cname("ftxui_element_yflex_shrink");
+
+extern fn ElementHandle element_notflex(
+  ElementHandle element)
+@cname("ftxui_element_notflex");
+
+extern fn ElementHandle element_set_size(
+  ElementHandle element,
+  WidthOrHeight width_or_height,
+  Constraint constraint_type,
+  CInt value)
+@cname("ftxui_element_set_size");
+
+extern fn ElementHandle element_frame(
+  ElementHandle element)
+@cname("ftxui_element_frame");
+
+extern fn ElementHandle element_xframe(
+  ElementHandle element)
+@cname("ftxui_element_xframe");
+
+extern fn ElementHandle element_yframe(
+  ElementHandle element)
+@cname("ftxui_element_yframe");
+
+extern fn ElementHandle element_vscroll_indicator(
+  ElementHandle element)
+@cname("ftxui_element_vscroll_indicator");
+
+extern fn ElementHandle element_hscroll_indicator(
+  ElementHandle element)
+@cname("ftxui_element_hscroll_indicator");
+
+extern fn ElementHandle element_focus(
+  ElementHandle element)
+@cname("ftxui_element_focus");
+
+extern fn ElementHandle element_focus_cursor_block(
+  ElementHandle element)
+@cname("ftxui_element_focus_cursor_block");
+
+extern fn ElementHandle element_focus_cursor_block_blinking(
+  ElementHandle element)
+@cname("ftxui_element_focus_cursor_block_blinking");
+
+extern fn ElementHandle element_focus_cursor_bar(
+  ElementHandle element)
+@cname("ftxui_element_focus_cursor_bar");
+
+extern fn ElementHandle element_focus_cursor_bar_blinking(
+  ElementHandle element)
+@cname("ftxui_element_focus_cursor_bar_blinking");
+
+extern fn ElementHandle element_focus_cursor_underline(
+  ElementHandle element)
+@cname("ftxui_element_focus_cursor_underline");
+
+extern fn ElementHandle element_focus_cursor_underline_blinking(
+  ElementHandle element)
+@cname("ftxui_element_focus_cursor_underline_blinking");
+
+extern fn ElementHandle element_focus_position(
+  ElementHandle element,
+  CInt x,
+  CInt y)
+@cname("ftxui_element_focus_position");
+
+extern fn ElementHandle element_focus_position_relative(
+  ElementHandle element,
+  float x,
+  float y)
+@cname("ftxui_element_focus_position_relative");
+
+extern fn BoxHandle box_create()
+@cname("ftxui_box_create");
+
+extern fn void box_destroy(
+  BoxHandle box)
+@cname("ftxui_box_destroy");
+
+extern fn CInt box_x_min(
+  BoxHandle box)
+@cname("ftxui_box_x_min");
+
+extern fn CInt box_x_max(
+  BoxHandle box)
+@cname("ftxui_box_x_max");
+
+extern fn CInt box_y_min(
+  BoxHandle box)
+@cname("ftxui_box_y_min");
+
+extern fn CInt box_y_max(
+  BoxHandle box)
+@cname("ftxui_box_y_max");
+
+extern fn CInt box_width(
+  BoxHandle box)
+@cname("ftxui_box_width");
+
+extern fn CInt box_height(
+  BoxHandle box)
+@cname("ftxui_box_height");
+
+extern fn ElementHandle element_reflect(
+  ElementHandle element,
+  BoxHandle box)
+@cname("ftxui_element_reflect");
+
+extern fn ElementHandle element_hcenter(
+  ElementHandle element)
+@cname("ftxui_element_hcenter");
+
+extern fn ElementHandle element_vcenter(
+  ElementHandle element)
+@cname("ftxui_element_vcenter");
+
+extern fn ElementHandle element_center(
+  ElementHandle element)
+@cname("ftxui_element_center");
+
+extern fn ElementHandle element_align_right(
+  ElementHandle element)
+@cname("ftxui_element_align_right");
+
+extern fn CanvasHandle canvas_create(
+  CInt width,
+  CInt height)
+@cname("ftxui_canvas_create");
+
+extern fn void canvas_destroy(
+  CanvasHandle canvas)
+@cname("ftxui_canvas_destroy");
+
+extern fn CInt canvas_width(
+  CanvasHandle canvas)
+@cname("ftxui_canvas_width");
+
+extern fn CInt canvas_height(
+  CanvasHandle canvas)
+@cname("ftxui_canvas_height");
+
+extern fn void canvas_draw_text(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CChar* text)
+@cname("ftxui_canvas_draw_text");
+
+extern fn void canvas_draw_text_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CChar* text,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_text_color");
+
+extern fn void canvas_draw_text_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CChar* text,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_text_stylizer");
+
+extern fn void canvas_draw_point_on(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y)
+@cname("ftxui_canvas_draw_point_on");
+
+extern fn void canvas_draw_point_off(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y)
+@cname("ftxui_canvas_draw_point_off");
+
+extern fn void canvas_draw_point_toggle(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y)
+@cname("ftxui_canvas_draw_point_toggle");
+
+extern fn void canvas_draw_point(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  bool value)
+@cname("ftxui_canvas_draw_point");
+
+extern fn void canvas_draw_point_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  bool value,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_point_color");
+
+extern fn void canvas_draw_point_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  bool value,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_point_stylizer");
+
+extern fn void canvas_draw_point_line(
+  CanvasHandle canvas,
+  CInt x1,
+  CInt y1,
+  CInt x2,
+  CInt y2,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_point_line");
+
+extern fn void canvas_draw_point_line_stylizer(
+  CanvasHandle canvas,
+  CInt x1,
+  CInt y1,
+  CInt x2,
+  CInt y2,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_point_line_stylizer");
+
+extern fn void canvas_draw_point_circle(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius)
+@cname("ftxui_canvas_draw_point_circle");
+
+extern fn void canvas_draw_point_circle_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_point_circle_color");
+
+extern fn void canvas_draw_point_circle_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_point_circle_stylizer");
+
+extern fn void canvas_draw_point_circle_filled(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius)
+@cname("ftxui_canvas_draw_point_circle_filled");
+
+extern fn void canvas_draw_point_circle_filled_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_point_circle_filled_color");
+
+extern fn void canvas_draw_point_circle_filled_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_point_circle_filled_stylizer");
+
+extern fn void canvas_draw_point_ellipse(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry)
+@cname("ftxui_canvas_draw_point_ellipse");
+
+extern fn void canvas_draw_point_ellipse_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_point_ellipse_color");
+
+extern fn void canvas_draw_point_ellipse_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_point_ellipse_stylizer");
+
+extern fn void canvas_draw_point_ellipse_filled(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry)
+@cname("ftxui_canvas_draw_point_ellipse_filled");
+
+extern fn void canvas_draw_point_ellipse_filled_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_point_ellipse_filled_color");
+
+extern fn void canvas_draw_point_ellipse_filled_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_point_ellipse_filled_stylizer");
+
+extern fn void canvas_draw_block_on(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y)
+@cname("ftxui_canvas_draw_block_on");
+
+extern fn void canvas_draw_block_off(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y)
+@cname("ftxui_canvas_draw_block_off");
+
+extern fn void canvas_draw_block_toggle(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y)
+@cname("ftxui_canvas_draw_block_toggle");
+
+extern fn void canvas_draw_block(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  bool value)
+@cname("ftxui_canvas_draw_block");
+
+extern fn void canvas_draw_block_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  bool value,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_block_color");
+
+extern fn void canvas_draw_block_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  bool value,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_block_stylizer");
+
+extern fn void canvas_draw_block_line(
+  CanvasHandle canvas,
+  CInt x1,
+  CInt y1,
+  CInt x2,
+  CInt y2,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_block_line");
+
+extern fn void canvas_draw_block_line_stylizer(
+  CanvasHandle canvas,
+  CInt x1,
+  CInt y1,
+  CInt x2,
+  CInt y2,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_block_line_stylizer");
+
+extern fn void canvas_draw_block_circle(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius)
+@cname("ftxui_canvas_draw_block_circle");
+
+extern fn void canvas_draw_block_circle_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_block_circle_color");
+
+extern fn void canvas_draw_block_circle_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_block_circle_stylizer");
+
+extern fn void canvas_draw_block_circle_filled(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius)
+@cname("ftxui_canvas_draw_block_circle_filled");
+
+extern fn void canvas_draw_block_circle_filled_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_block_circle_filled_color");
+
+extern fn void canvas_draw_block_circle_filled_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt radius,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_block_circle_filled_stylizer");
+
+extern fn void canvas_draw_block_ellipse(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry)
+@cname("ftxui_canvas_draw_block_ellipse");
+
+extern fn void canvas_draw_block_ellipse_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_block_ellipse_color");
+
+extern fn void canvas_draw_block_ellipse_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_block_ellipse_stylizer");
+
+extern fn void canvas_draw_block_ellipse_filled(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry)
+@cname("ftxui_canvas_draw_block_ellipse_filled");
+
+extern fn void canvas_draw_block_ellipse_filled_color(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  ColorHandle color)
+@cname("ftxui_canvas_draw_block_ellipse_filled_color");
+
+extern fn void canvas_draw_block_ellipse_filled_stylizer(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CInt rx,
+  CInt ry,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_draw_block_ellipse_filled_stylizer");
+
+extern fn void canvas_style(
+  CanvasHandle canvas,
+  CInt x,
+  CInt y,
+  CellStyleCallback cb,
+  void* userdata)
+@cname("ftxui_canvas_style");
+
+extern fn ElementHandle element_canvas_ref(
+  CanvasHandle canvas)
+@cname("ftxui_element_canvas_ref");
+
+alias DecoratorCallback = fn ElementHandle(
+  ElementHandle element,
+  void* userdata);
+
+extern fn TableHandle table_create(
+  CChar** cells,
+  CInt rows,
+  CInt cols)
+@cname("ftxui_table_create");
+
+extern fn void table_destroy(
+  TableHandle table)
+@cname("ftxui_table_destroy");
+
+extern fn ElementHandle table_render(
+  TableHandle table)
+@cname("ftxui_table_render");
+
+extern fn TableSelectionHandle table_select_all(
+  TableHandle table)
+@cname("ftxui_table_select_all");
+
+extern fn TableSelectionHandle table_select_row(
+  TableHandle table,
+  CInt row)
+@cname("ftxui_table_select_row");
+
+extern fn TableSelectionHandle table_select_rows(
+  TableHandle table,
+  CInt from,
+  CInt to)
+@cname("ftxui_table_select_rows");
+
+extern fn TableSelectionHandle table_select_column(
+  TableHandle table,
+  CInt col)
+@cname("ftxui_table_select_column");
+
+extern fn TableSelectionHandle table_select_cell(
+  TableHandle table,
+  CInt col,
+  CInt row)
+@cname("ftxui_table_select_cell");
+
+extern fn TableSelectionHandle table_select_columns(
+  TableHandle table,
+  CInt from,
+  CInt to)
+@cname("ftxui_table_select_columns");
+
+extern fn TableSelectionHandle table_select_rectangle(
+  TableHandle table,
+  CInt col_min,
+  CInt col_max,
+  CInt row_min,
+  CInt row_max)
+@cname("ftxui_table_select_rectangle");
+
+extern fn void table_selection_destroy(
+  TableSelectionHandle sel)
+@cname("ftxui_table_selection_destroy");
+
+extern fn void table_selection_border(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_border");
+
+extern fn void table_selection_border_color(
+  TableSelectionHandle sel,
+  BorderStyle style,
+  ColorHandle color)
+@cname("ftxui_table_selection_border_color");
+
+extern fn void table_selection_border_left(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_border_left");
+
+extern fn void table_selection_border_right(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_border_right");
+
+extern fn void table_selection_border_top(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_border_top");
+
+extern fn void table_selection_border_bottom(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_border_bottom");
+
+extern fn void table_selection_separator(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_separator");
+
+extern fn void table_selection_separator_vertical(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_separator_vertical");
+
+extern fn void table_selection_separator_horizontal(
+  TableSelectionHandle sel,
+  BorderStyle style)
+@cname("ftxui_table_selection_separator_horizontal");
+
+extern fn void table_selection_decorate(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate");
+
+extern fn void table_selection_decorate_alternate_row(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  CInt modulo,
+  CInt shift,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_alternate_row");
+
+extern fn void table_selection_decorate_alternate_column(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  CInt modulo,
+  CInt shift,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_alternate_column");
+
+extern fn void table_selection_decorate_border(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_border");
+
+extern fn void table_selection_decorate_border_left(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_border_left");
+
+extern fn void table_selection_decorate_border_right(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_border_right");
+
+extern fn void table_selection_decorate_border_top(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_border_top");
+
+extern fn void table_selection_decorate_border_bottom(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_border_bottom");
+
+extern fn void table_selection_decorate_separator(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_separator");
+
+extern fn void table_selection_decorate_separator_vertical(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_separator_vertical");
+
+extern fn void table_selection_decorate_separator_horizontal(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_separator_horizontal");
+
+extern fn void table_selection_decorate_cells(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_cells");
+
+extern fn void table_selection_decorate_cells_alternate_row(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  CInt modulo,
+  CInt shift,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_cells_alternate_row");
+
+extern fn void table_selection_decorate_cells_alternate_column(
+  TableSelectionHandle sel,
+  DecoratorCallback cb,
+  void* userdata,
+  CInt modulo,
+  CInt shift,
+  Destructor destructor)
+@cname("ftxui_table_selection_decorate_cells_alternate_column");
+
+extern fn void table_selection_decorate_bold(
+  TableSelectionHandle sel)
+@cname("ftxui_table_selection_decorate_bold");
+
+extern fn void table_selection_decorate_cells_align_right(
+  TableSelectionHandle sel)
+@cname("ftxui_table_selection_decorate_cells_align_right");
+
+extern fn void table_selection_decorate_cells_color(
+  TableSelectionHandle sel,
+  ColorHandle color)
+@cname("ftxui_table_selection_decorate_cells_color");
+
+extern fn void table_selection_decorate_cells_color_alternate_row(
+  TableSelectionHandle sel,
+  ColorHandle color,
+  CInt modulo,
+  CInt offset)
+@cname("ftxui_table_selection_decorate_cells_color_alternate_row");
+
+
+struct AnimatedColorOption {
+  bool enabled;
+  ColorHandle inactive;
+  ColorHandle active;
+  CInt duration_ms;
+  EasingFunctionType easing_function_type;
+}
+
+
+struct AnimatedColorsOption {
+  AnimatedColorOption background;
+  AnimatedColorOption foreground;
+}
+
+
+struct EntryState {
+  CChar* label;
+  bool state;
+  bool active;
+  bool focused;
+  CInt index;
+}
+
+alias ButtonTransform = fn ElementHandle(
+  EntryState state,
+  void* userdata);
+
+
+struct ButtonOption {
+  AnimatedColorsOption animated_colors;
+  ButtonTransform transform;
+  void* transform_userdata;
+  Destructor transform_destructor;
+}
+
+extern fn ComponentHandle component_button(
+  CChar* label,
+  UnnamedPFN1 on_click,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_button");
+
+extern fn ComponentHandle component_button_with_options(
+  CChar* label,
+  UnnamedPFN1 on_click,
+  void* userdata,
+  Destructor destructor,
+  ButtonOption options)
+@cname("ftxui_component_button_with_options");
+
+extern fn ButtonOption button_option_simple()
+@cname("ftxui_button_option_simple");
+
+extern fn ButtonOption button_option_ascii()
+@cname("ftxui_button_option_ascii");
+
+extern fn ButtonOption button_option_border()
+@cname("ftxui_button_option_border");
+
+extern fn ButtonOption button_option_animated(
+  ColorHandle background,
+  ColorHandle foreground,
+  ColorHandle background_active,
+  ColorHandle foreground_active)
+@cname("ftxui_button_option_animated");
+
+extern fn ComponentHandle component_checkbox(
+  CChar* label,
+  bool* checked)
+@cname("ftxui_component_checkbox");
+
+extern fn ComponentHandle component_checkbox_with_change(
+  CChar* label,
+  bool* checked,
+  Callback on_change,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_checkbox_with_change");
+
+extern fn StringHandle string_create(
+  CChar* initial)
+@cname("ftxui_string_create");
+
+extern fn CChar* string_get(
+  StringHandle str)
+@cname("ftxui_string_get");
+
+extern fn void string_set(
+  StringHandle str,
+  CChar* value)
+@cname("ftxui_string_set");
+
+extern fn void string_destroy(
+  StringHandle str)
+@cname("ftxui_string_destroy");
+
+extern fn ComponentHandle component_input(
+  StringHandle content,
+  CChar* placeholder)
+@cname("ftxui_component_input");
+
+extern fn ComponentHandle component_input_password(
+  StringHandle content,
+  CChar* placeholder)
+@cname("ftxui_component_input_password");
+
+
+struct InputOptions {
+  StringHandle content;
+  CChar* placeholder;
+  bool* multiline;
+  bool* insert;
+  CInt* cursor_position;
+  Callback on_change;
+  void* on_change_userdata;
+  Destructor on_change_destructor;
+  Callback on_enter;
+  void* on_enter_userdata;
+  Destructor on_enter_destructor;
+}
+
+extern fn ComponentHandle component_input_with_options(
+  InputOptions opts)
+@cname("ftxui_component_input_with_options");
+
+extern fn ComponentHandle component_toggle(
+  CChar** entries,
+  CInt count,
+  CInt* selected)
+@cname("ftxui_component_toggle");
+
+extern fn ComponentHandle component_slider(
+  CChar* label,
+  CInt* value,
+  CInt min,
+  CInt max,
+  CInt increment)
+@cname("ftxui_component_slider");
+
+extern fn ComponentHandle component_slider_int_with_change(
+  CInt* value,
+  CInt min,
+  CInt max,
+  CInt increment,
+  Callback on_change,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_slider_int_with_change");
+
+extern fn ComponentHandle component_slider_float_with_change(
+  float* value,
+  float min,
+  float max,
+  float increment,
+  Callback on_change,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_slider_float_with_change");
+
+extern fn ComponentHandle component_slider_int_direction(
+  CInt* value,
+  CInt min,
+  CInt max,
+  CInt increment,
+  Direction direction)
+@cname("ftxui_component_slider_int_direction");
+
+extern fn ComponentHandle component_slider_float(
+  CChar* label,
+  float* value,
+  float min,
+  float max,
+  float increment)
+@cname("ftxui_component_slider_float");
+
+extern fn ComponentHandle component_slider_float_direction(
+  float* value,
+  float min,
+  float max,
+  float increment,
+  Direction direction,
+  ColorHandle color_active,
+  ColorHandle color_inactive)
+@cname("ftxui_component_slider_float_direction");
+
+extern fn ComponentHandle component_radiobox(
+  CChar** entries,
+  CInt count,
+  CInt* selected)
+@cname("ftxui_component_radiobox");
+
+extern fn ComponentHandle component_radiobox_with_change(
+  CChar** entries,
+  CInt count,
+  CInt* selected,
+  Callback on_change,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_radiobox_with_change");
+
+extern fn ComponentHandle component_menu(
+  CChar** entries,
+  CInt count,
+  CInt* selected)
+@cname("ftxui_component_menu");
+
+extern fn ComponentHandle component_menu_with_callbacks(
+  CChar** entries,
+  CInt count,
+  CInt* selected,
+  Callback on_change,
+  void* on_change_userdata,
+  Destructor on_change_destructor,
+  Callback on_enter,
+  void* on_enter_userdata,
+  Destructor on_enter_destructor)
+@cname("ftxui_component_menu_with_callbacks");
+
+extern fn ComponentHandle component_menu_entry(
+  CChar* label)
+@cname("ftxui_component_menu_entry");
+
+extern fn ComponentHandle component_menu_entry_animated(
+  CChar* label,
+  AnimatedColorsOption animated_colors)
+@cname("ftxui_component_menu_entry_animated");
+
+extern fn ComponentHandle component_menu_horizontal(
+  CChar** entries,
+  CInt count,
+  CInt* selected)
+@cname("ftxui_component_menu_horizontal");
+
+extern fn ComponentHandle component_menu_horizontal_animated(
+  CChar** entries,
+  CInt count,
+  CInt* selected)
+@cname("ftxui_component_menu_horizontal_animated");
+
+extern fn ComponentHandle component_menu_toggle(
+  CChar** entries,
+  CInt count,
+  CInt* selected)
+@cname("ftxui_component_menu_toggle");
+
+extern fn ComponentHandle component_dropdown(
+  CChar** entries,
+  CInt count,
+  CInt* selected)
+@cname("ftxui_component_dropdown");
+
+alias DropdownTransformCallback = fn ElementHandle(
+  bool open,
+  ElementHandle checkbox,
+  ElementHandle radiobox,
+  void* userdata);
+
+extern fn ComponentHandle component_dropdown_custom(
+  CChar** entries,
+  CInt count,
+  CInt* selected,
+  DropdownTransformCallback transform,
+  void* transform_userdata,
+  Destructor transform_destructor,
+  ButtonTransform entry_transform,
+  void* entry_transform_userdata,
+  Destructor entry_transform_destructor)
+@cname("ftxui_component_dropdown_custom");
+
+extern fn ComponentHandle component_container_vertical()
+@cname("ftxui_component_container_vertical");
+
+extern fn ComponentHandle component_container_vertical_focused(
+  CInt* selector)
+@cname("ftxui_component_container_vertical_focused");
+
+extern fn ComponentHandle component_container_horizontal()
+@cname("ftxui_component_container_horizontal");
+
+extern fn ComponentHandle component_container_horizontal_focused(
+  CInt* selector)
+@cname("ftxui_component_container_horizontal_focused");
+
+extern fn ComponentHandle component_container_tab(
+  CInt* selected)
+@cname("ftxui_component_container_tab");
+
+extern fn ComponentHandle component_container_stacked()
+@cname("ftxui_component_container_stacked");
+
+extern fn void container_add(
+  ComponentHandle container,
+  ComponentHandle child)
+@cname("ftxui_container_add");
+
+extern fn bool component_focused(
+  ComponentHandle component)
+@cname("ftxui_component_focused");
+
+extern fn bool component_active(
+  ComponentHandle component)
+@cname("ftxui_component_active");
+
+extern fn void component_take_focus(
+  ComponentHandle component)
+@cname("ftxui_component_take_focus");
+
+extern fn ComponentHandle component_active_child(
+  ComponentHandle component)
+@cname("ftxui_component_active_child");
+
+extern fn void component_set_active_child(
+  ComponentHandle component,
+  ComponentHandle child)
+@cname("ftxui_component_set_active_child");
+
+extern fn ComponentHandle component_renderer(
+  ComponentHandle component,
+  RenderCallback callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_renderer");
+
+alias FocusedRenderCallback = fn ElementHandle(
+  bool focused,
+  void* userdata);
+
+extern fn ComponentHandle component_renderer_focusable(
+  FocusedRenderCallback callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_renderer_focusable");
+
+alias InnerRenderCallback = fn ElementHandle(
+  ElementHandle inner,
+  void* userdata);
+
+extern fn ComponentHandle component_renderer_with_inner(
+  ComponentHandle component,
+  InnerRenderCallback callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_renderer_with_inner");
+
+extern fn ElementHandle component_render(
+  ComponentHandle component)
+@cname("ftxui_component_render");
+
+extern fn ComponentHandle component_poll(
+  AppHandle app,
+  UnnamedPFN1 on_poll,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_poll");
+
+extern fn ComponentHandle component_collapsible(
+  CChar* label,
+  ComponentHandle child,
+  bool* show)
+@cname("ftxui_component_collapsible");
+
+extern fn ComponentHandle component_maybe(
+  ComponentHandle child,
+  bool* show)
+@cname("ftxui_component_maybe");
+
+extern fn ComponentHandle component_maybe_fn(
+  ComponentHandle child,
+  PredicateCallback predicate,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_maybe_fn");
+
+extern fn ComponentHandle component_modal(
+  ComponentHandle main,
+  ComponentHandle modal,
+  bool* show_modal)
+@cname("ftxui_component_modal");
+
+extern fn ComponentHandle component_resizable_split_left(
+  ComponentHandle main,
+  ComponentHandle back,
+  CInt* main_size)
+@cname("ftxui_component_resizable_split_left");
+
+extern fn ComponentHandle component_resizable_split_right(
+  ComponentHandle main,
+  ComponentHandle back,
+  CInt* main_size)
+@cname("ftxui_component_resizable_split_right");
+
+extern fn ComponentHandle component_resizable_split_top(
+  ComponentHandle main,
+  ComponentHandle back,
+  CInt* main_size)
+@cname("ftxui_component_resizable_split_top");
+
+extern fn ComponentHandle component_resizable_split_bottom(
+  ComponentHandle main,
+  ComponentHandle back,
+  CInt* main_size)
+@cname("ftxui_component_resizable_split_bottom");
+
+alias SeparatorFunc = fn ElementHandle(
+  void* userdata);
+
+
+struct ResizableSplitOption {
+  ComponentHandle main;
+  ComponentHandle back;
+  Direction direction;
+  CInt* main_size;
+  CInt* min_size;
+  CInt* max_size;
+  SeparatorFunc separator_func;
+  void* separator_userdata;
+  Destructor separator_destructor;
+}
+
+extern fn ComponentHandle component_resizable_split_opt(
+  ResizableSplitOption option)
+@cname("ftxui_component_resizable_split_opt");
+
+
+struct WindowOptions {
+  ComponentHandle inner;
+  CChar* title;
+  CInt* left;
+  CInt* top;
+  CInt* width;
+  CInt* height;
+  CInt left_default;
+  CInt top_default;
+  CInt width_default;
+  CInt height_default;
+}
+
+extern fn ComponentHandle component_window(
+  WindowOptions options)
+@cname("ftxui_component_window");
+
+extern fn ComponentHandle component_hoverable(
+  ComponentHandle component,
+  bool* hover)
+@cname("ftxui_component_hoverable");
+
+extern fn ComponentHandle component_hoverable_callbacks(
+  ComponentHandle component,
+  Callback on_enter,
+  void* on_enter_userdata,
+  Destructor on_enter_destructor,
+  Callback on_leave,
+  void* on_leave_userdata,
+  Destructor on_leave_destructor)
+@cname("ftxui_component_hoverable_callbacks");
+
+alias UnnamedPFN2 @private = fn void(
+  bool hovered,
+  void* userdata);
+
+extern fn ComponentHandle component_hoverable_change(
+  ComponentHandle component,
+  UnnamedPFN2 on_change,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_hoverable_change");
+
+alias CatchEventCallback = fn bool(
+  EventHandle event,
+  void* userdata);
+
+extern fn ComponentHandle component_catch_event(
+  ComponentHandle component,
+  CatchEventCallback callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_catch_event");
+
+extern fn ComponentHandle component_post_catch_event(
+  ComponentHandle component,
+  CatchEventCallback callback,
+  void* userdata,
+  Destructor destructor)
+@cname("ftxui_component_post_catch_event");
+
+extern fn void component_destroy(
+  ComponentHandle component)
+@cname("ftxui_component_destroy");
+
+extern fn ComponentHandle component_border(
+  ComponentHandle component)
+@cname("ftxui_component_border");
+
+extern fn ComponentHandle component_border_light(
+  ComponentHandle component)
+@cname("ftxui_component_border_light");
+
+extern fn ComponentHandle component_border_dashed(
+  ComponentHandle component)
+@cname("ftxui_component_border_dashed");
+
+extern fn ComponentHandle component_border_heavy(
+  ComponentHandle component)
+@cname("ftxui_component_border_heavy");
+
+extern fn ComponentHandle component_border_double(
+  ComponentHandle component)
+@cname("ftxui_component_border_double");
+
+extern fn ComponentHandle component_border_rounded(
+  ComponentHandle component)
+@cname("ftxui_component_border_rounded");
+
+extern fn ComponentHandle component_border_empty(
+  ComponentHandle component)
+@cname("ftxui_component_border_empty");
+
+extern fn ComponentHandle component_bold(
+  ComponentHandle component)
+@cname("ftxui_component_bold");
+
+extern fn ComponentHandle component_dim(
+  ComponentHandle component)
+@cname("ftxui_component_dim");
+
+extern fn ComponentHandle component_inverted(
+  ComponentHandle component)
+@cname("ftxui_component_inverted");
+
+extern fn ComponentHandle component_underlined(
+  ComponentHandle component)
+@cname("ftxui_component_underlined");
+
+extern fn ComponentHandle component_blink(
+  ComponentHandle component)
+@cname("ftxui_component_blink");
+
+extern fn ComponentHandle component_strikethrough(
+  ComponentHandle component)
+@cname("ftxui_component_strikethrough");
+
+extern fn ComponentHandle component_nothing(
+  ComponentHandle component)
+@cname("ftxui_component_nothing");
+
+extern fn ComponentHandle component_color(
+  ComponentHandle component,
+  ColorHandle color)
+@cname("ftxui_component_color");
+
+extern fn ComponentHandle component_bgcolor(
+  ComponentHandle component,
+  ColorHandle color)
+@cname("ftxui_component_bgcolor");
+
+extern fn ComponentHandle component_vscroll_indicator(
+  ComponentHandle component)
+@cname("ftxui_component_vscroll_indicator");
+
+extern fn ComponentHandle component_frame(
+  ComponentHandle component)
+@cname("ftxui_component_frame");
+
+extern fn ComponentHandle component_flex(
+  ComponentHandle component)
+@cname("ftxui_component_flex");
+
+extern fn ComponentHandle component_hcenter(
+  ComponentHandle component)
+@cname("ftxui_component_hcenter");
+
+extern fn ComponentHandle component_vcenter(
+  ComponentHandle component)
+@cname("ftxui_component_vcenter");
+
+extern fn ComponentHandle component_center(
+  ComponentHandle component)
+@cname("ftxui_component_center");
+
+extern fn ComponentHandle component_align_right(
+  ComponentHandle component)
+@cname("ftxui_component_align_right");
+
+extern fn ComponentHandle component_set_size(
+  ComponentHandle component,
+  WidthOrHeight width_or_height,
+  Constraint constraint_type,
+  CInt value)
+@cname("ftxui_component_set_size");
+
+constdef MouseButton : CInt {
+  FTXUI_MOUSE_BUTTON_LEFT = 0,
+  FTXUI_MOUSE_BUTTON_MIDDLE = 1,
+  FTXUI_MOUSE_BUTTON_RIGHT = 2,
+  FTXUI_MOUSE_BUTTON_NONE = 3,
+  FTXUI_MOUSE_BUTTON_WHEEL_UP = 4,
+  FTXUI_MOUSE_BUTTON_WHEEL_DOWN = 5,
+  FTXUI_MOUSE_BUTTON_WHEEL_LEFT = 6,
+  FTXUI_MOUSE_BUTTON_WHEEL_RIGHT = 7
+}
+
+constdef MouseMotion : CInt {
+  FTXUI_MOUSE_MOTION_RELEASED = 0,
+  FTXUI_MOUSE_MOTION_PRESSED = 1,
+  FTXUI_MOUSE_MOTION_MOVED = 2
+}
+
+extern fn CChar* event_input(
+  EventHandle event)
+@cname("ftxui_event_input");
+
+extern fn CChar* event_debug_string(
+  EventHandle event)
+@cname("ftxui_event_debug_string");
+
+extern fn bool event_is_character(
+  EventHandle event)
+@cname("ftxui_event_is_character");
+
+extern fn CChar* event_character(
+  EventHandle event)
+@cname("ftxui_event_character");
+
+extern fn bool event_is_mouse(
+  EventHandle event)
+@cname("ftxui_event_is_mouse");
+
+extern fn CInt event_mouse_x(
+  EventHandle event)
+@cname("ftxui_event_mouse_x");
+
+extern fn CInt event_mouse_y(
+  EventHandle event)
+@cname("ftxui_event_mouse_y");
+
+extern fn MouseButton event_mouse_button(
+  EventHandle event)
+@cname("ftxui_event_mouse_button");
+
+extern fn MouseMotion event_mouse_motion(
+  EventHandle event)
+@cname("ftxui_event_mouse_motion");
+
+extern fn bool event_mouse_shift(
+  EventHandle event)
+@cname("ftxui_event_mouse_shift");
+
+extern fn bool event_mouse_meta(
+  EventHandle event)
+@cname("ftxui_event_mouse_meta");
+
+extern fn bool event_mouse_control(
+  EventHandle event)
+@cname("ftxui_event_mouse_control");
+
+extern fn bool event_is_cursor_position(
+  EventHandle event)
+@cname("ftxui_event_is_cursor_position");
+
+extern fn CInt event_cursor_x(
+  EventHandle event)
+@cname("ftxui_event_cursor_x");
+
+extern fn CInt event_cursor_y(
+  EventHandle event)
+@cname("ftxui_event_cursor_y");
+
+extern fn bool event_is_cursor_shape(
+  EventHandle event)
+@cname("ftxui_event_is_cursor_shape");
+
+extern fn CInt event_cursor_shape(
+  EventHandle event)
+@cname("ftxui_event_cursor_shape");
+
+extern fn bool event_is_terminal_name_version(
+  EventHandle event)
+@cname("ftxui_event_is_terminal_name_version");
+
+extern fn CChar* event_terminal_name(
+  EventHandle event)
+@cname("ftxui_event_terminal_name");
+
+extern fn CInt event_terminal_version(
+  EventHandle event)
+@cname("ftxui_event_terminal_version");
+
+extern fn bool event_is_terminal_emulator(
+  EventHandle event)
+@cname("ftxui_event_is_terminal_emulator");
+
+extern fn CChar* event_terminal_emulator_name(
+  EventHandle event)
+@cname("ftxui_event_terminal_emulator_name");
+
+extern fn CChar* event_terminal_emulator_version(
+  EventHandle event)
+@cname("ftxui_event_terminal_emulator_version");
+
+extern fn bool event_is_terminal_capabilities(
+  EventHandle event)
+@cname("ftxui_event_is_terminal_capabilities");
+
+extern fn CInt* event_terminal_capabilities(
+  EventHandle event,
+  CInt* count)
+@cname("ftxui_event_terminal_capabilities");
+
+extern fn void event_destroy(
+  EventHandle event)
+@cname("ftxui_event_destroy");
+
+extern fn bool event_equal(
+  EventHandle a,
+  EventHandle b)
+@cname("ftxui_event_equal");
+
+extern fn EventHandle event_arrow_left()
+@cname("ftxui_event_arrow_left");
+
+extern fn EventHandle event_arrow_right()
+@cname("ftxui_event_arrow_right");
+
+extern fn EventHandle event_arrow_up()
+@cname("ftxui_event_arrow_up");
+
+extern fn EventHandle event_arrow_down()
+@cname("ftxui_event_arrow_down");
+
+extern fn EventHandle event_arrow_left_ctrl()
+@cname("ftxui_event_arrow_left_ctrl");
+
+extern fn EventHandle event_arrow_right_ctrl()
+@cname("ftxui_event_arrow_right_ctrl");
+
+extern fn EventHandle event_arrow_up_ctrl()
+@cname("ftxui_event_arrow_up_ctrl");
+
+extern fn EventHandle event_arrow_down_ctrl()
+@cname("ftxui_event_arrow_down_ctrl");
+
+extern fn EventHandle event_backspace()
+@cname("ftxui_event_backspace");
+
+extern fn EventHandle event_delete()
+@cname("ftxui_event_delete");
+
+extern fn EventHandle event_return()
+@cname("ftxui_event_return");
+
+extern fn EventHandle event_escape()
+@cname("ftxui_event_escape");
+
+extern fn EventHandle event_tab()
+@cname("ftxui_event_tab");
+
+extern fn EventHandle event_tab_reverse()
+@cname("ftxui_event_tab_reverse");
+
+extern fn EventHandle event_insert()
+@cname("ftxui_event_insert");
+
+extern fn EventHandle event_home()
+@cname("ftxui_event_home");
+
+extern fn EventHandle event_end()
+@cname("ftxui_event_end");
+
+extern fn EventHandle event_page_up()
+@cname("ftxui_event_page_up");
+
+extern fn EventHandle event_page_down()
+@cname("ftxui_event_page_down");
+
+extern fn EventHandle event_f1()
+@cname("ftxui_event_f1");
+
+extern fn EventHandle event_f2()
+@cname("ftxui_event_f2");
+
+extern fn EventHandle event_f3()
+@cname("ftxui_event_f3");
+
+extern fn EventHandle event_f4()
+@cname("ftxui_event_f4");
+
+extern fn EventHandle event_f5()
+@cname("ftxui_event_f5");
+
+extern fn EventHandle event_f6()
+@cname("ftxui_event_f6");
+
+extern fn EventHandle event_f7()
+@cname("ftxui_event_f7");
+
+extern fn EventHandle event_f8()
+@cname("ftxui_event_f8");
+
+extern fn EventHandle event_f9()
+@cname("ftxui_event_f9");
+
+extern fn EventHandle event_f10()
+@cname("ftxui_event_f10");
+
+extern fn EventHandle event_f11()
+@cname("ftxui_event_f11");
+
+extern fn EventHandle event_f12()
+@cname("ftxui_event_f12");
+
+extern fn EventHandle event_custom()
+@cname("ftxui_event_custom");
+
+extern fn EventHandle event_character_from_char(
+  CChar c)
+@cname("ftxui_event_character_from_char");
+
+extern fn EventHandle event_special(
+  CChar* input)
+@cname("ftxui_event_special");
+
+extern fn EventHandle event_ctrl_char(
+  CChar c)
+@cname("ftxui_event_ctrl_char");
+
+extern fn EventHandle event_alt_char(
+  CChar c)
+@cname("ftxui_event_alt_char");
+
+extern fn EasingFunction easing_function_get(
+  EasingFunctionType type)
+@cname("ftxui_easing_function_get");

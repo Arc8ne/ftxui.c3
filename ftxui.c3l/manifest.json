@@ -1,0 +1,12 @@
+{
+  "provides": "ftxui",
+  "sources": ["src/**"],
+  "targets": {
+    "windows-x64": {
+      "linked-libraries": ["ftxui_c_binding", "ftxui-component", "ftxui-dom", "ftxui-screen"]
+    },
+    "linux-x64": {
+      "linked-libraries": ["ftxui_c_binding", "ftxui-component", "ftxui-dom", "ftxui-screen"]
+    }
+  }
+}
