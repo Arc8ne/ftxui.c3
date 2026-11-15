@@ -1,0 +1,3 @@
+[submodule "ftxui-c"]
+	path = ftxui-c
+	url = https://github.com/nassendelft/ftxui-c.git
